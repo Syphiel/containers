@@ -46,7 +46,7 @@ jobs:
         run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${{ steps.app.outputs.app }}" >> $GITHUB_ENV
 
       - name: Build and Push Image
-        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        uses: docker/build-push-action@ca877d9245402d1537745e0e356eab47c3520991
         with:
           file: ./apps/${{ steps.app.outputs.app }}/Containerfile
           context: .
