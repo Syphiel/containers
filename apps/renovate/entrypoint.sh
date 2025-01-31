@@ -25,7 +25,7 @@ make_jwt() {
 }
 
 get_installation_id() {
-  INSTALLATION_ID=$(curl -L \
+  INSTALLATION_ID=$(curl -s -L \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer $JWT" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
@@ -33,7 +33,7 @@ get_installation_id() {
 }
 
 get_access_token() {
-  ACCESS_TOKEN=$(curl --request POST \
+  ACCESS_TOKEN=$(curl -s --request POST \
     --url "https://api.github.com/app/installations/${INSTALLATION_ID}/access_tokens" \
     --header "Accept: application/vnd.github+json" \
     --header "Authorization: Bearer ${JWT}" \
