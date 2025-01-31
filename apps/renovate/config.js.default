@@ -1,0 +1,8 @@
+module.exports = {
+  onboardingConfig: {
+    extends: [
+      "config:recommended",
+      "docker:pinDigests",
+    ],
+  },
+}

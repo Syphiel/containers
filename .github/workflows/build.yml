@@ -1,0 +1,54 @@
+---
+name: Build Containers
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/README.md'
+  workflow_dispatch:
+    inputs:
+      app:
+        required: false
+        type: string
+        default: "renovate"
+
+jobs:
+  build-and-push:
+    name: Build and push image
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
+    steps:
+      - name: Set app name
+        id: app
+        run: |
+          APP_NAME=${{ github.event.inputs.app }}
+          echo "::set-output name=app::${APP_NAME:-"renovate"}"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lowercase Registry
+        shell: bash
+        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${{ steps.app.outputs.app }}" >> $GITHUB_ENV
+
+      - name: Build and Push Image
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          file: ./apps/${{ steps.app.outputs.app }}/Containerfile
+          context: .
+          image: ${{ steps.app.outputs.app }}
+          tags: ${{ env.IMAGE }}:latest
