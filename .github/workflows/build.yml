@@ -50,5 +50,5 @@ jobs:
         with:
           file: ./apps/${{ steps.app.outputs.app }}/Containerfile
           context: .
-          image: ${{ steps.app.outputs.app }}
+          push: true
           tags: ${{ env.IMAGE }}:latest
