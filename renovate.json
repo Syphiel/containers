@@ -3,5 +3,19 @@
   "extends": [
     "config:recommended",
     "docker:pinDigests"
+  ],
+  "packageRules": [
+    {
+      "matchFileNames": [
+        "renovate/**"
+      ],
+      "groupName": "renovate",
+      "extends": [
+        ":semanticCommitScope(renovate)"
+      ],
+      "addLabels": [
+        "renovate"
+      ]
+    }
   ]
 }
