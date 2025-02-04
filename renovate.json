@@ -7,7 +7,7 @@
   "packageRules": [
     {
       "matchFileNames": [
-        "renovate/**"
+        "apps/renovate/**"
       ],
       "groupName": "renovate",
       "extends": [
