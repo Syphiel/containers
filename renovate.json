@@ -16,7 +16,8 @@
       "addLabels": [
         "renovate"
       ],
-      "automerge": true
+      "automerge": true,
+      "platformAutomerge": false
     }
   ]
 }
