@@ -17,6 +17,7 @@
         "renovate"
       ],
       "automerge": true,
+      "automergeType": "branch",
       "platformAutomerge": false
     }
   ]
