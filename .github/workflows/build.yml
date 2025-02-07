@@ -28,8 +28,8 @@ jobs:
       - name: Set app name
         id: app
         run: |
-          APP_NAME=${{ github.event.inputs.app }}
-          echo "::set-output name=app::${APP_NAME:-"renovate"}"
+          APP_NAME="${{ github.event.inputs.app }}"
+          echo "app=${APP_NAME:-"renovate"}" >> "$GITHUB_OUTPUT"
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -43,7 +43,7 @@ jobs:
 
       - name: Lowercase Registry
         shell: bash
-        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${{ steps.app.outputs.app }}" >> $GITHUB_ENV
+        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${{ steps.app.outputs.app }}" >> "$GITHUB_ENV"
 
       - name: Build and Push Image
         uses: docker/build-push-action@ca877d9245402d1537745e0e356eab47c3520991
