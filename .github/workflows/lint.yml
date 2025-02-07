@@ -1,0 +1,14 @@
+name: Lint Containerfiles
+
+on: push
+
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint Containerfiles
+        uses: hadolint/hadolint-action@master
+        with:
+          dockerfile: "Containerfile"
+          recursive: true
