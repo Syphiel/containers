@@ -1,22 +1,47 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Build Containers
 on:
   push:
     branches:
       - main
     paths-ignore:
-      - '**/README.md'
+      - "**/README.md"
   workflow_dispatch:
     inputs:
       app:
+        description: "App name to build"
         required: false
         type: string
         default: "renovate"
 
 jobs:
+  get-changed:
+    name: Get changed apps
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.changed.outputs.changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get changed files
+        if: github.event_name == 'push'
+        id: changed
+        run: |
+          echo "changed=$(git diff --name-only HEAD^ HEAD | grep -E '(?<=apps/)([^/]+)(?=/.+)' || echo 'renovate' | jq --raw-input --slurp 'split(\"\n\") |  map(select(. != \"\")) | { \"apps\": . }')" >> "$GITHUB_OUTPUT"
+
+      - name: Set default app
+        if: github.event_name == 'workflow_dispatch'
+        id: default
+        run: |
+          echo "changed={\"apps\": [\"${{ github.event.inputs.app }}\"]}" >> "$GITHUB_OUTPUT"
+
   build-and-push:
     name: Build and push image
     runs-on: ubuntu-latest
+    needs: get-changed
+    if: needs.get-changed.outputs.changed != '[]'
 
     permissions:
       contents: read
@@ -24,15 +49,20 @@ jobs:
       attestations: write
       id-token: write
 
-    steps:
-      - name: Set app name
-        id: app
-        run: |
-          APP_NAME="${{ github.event.inputs.app }}"
-          echo "app=${APP_NAME:-"renovate"}" >> "$GITHUB_OUTPUT"
+    strategy:
+      fail-fast: false
+      matrix:
+        app: ${{ fromJson(needs.get-changed.outputs.changed).apps }}
 
-      - name: Checkout
+    steps:
+      - name: Checkout {{ matrix.app }}
         uses: actions/checkout@v4
+
+      - name: Get {{ matrix.app }} tag
+        id: tag
+        run: |
+          TAG=$(grep -oP '^FROM .+{{ matrix.app }}:\K([^@$]+) ./apps/{{ matrix.app }}/Containerfile' | tail -1)
+          echo "TAG=${TAG:-"latest"}" >> "$GITHUB_ENV"
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772
@@ -43,12 +73,12 @@ jobs:
 
       - name: Lowercase Registry
         shell: bash
-        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${{ steps.app.outputs.app }}" >> "$GITHUB_ENV"
+        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${{ matrix.app }}" >> "$GITHUB_ENV"
 
-      - name: Build and Push Image
+      - name: Build and Push {{ matrix.app }}
         uses: docker/build-push-action@88844b95d8cbbb41035fa9c94e5967a33b92db78
         with:
-          file: ./apps/${{ steps.app.outputs.app }}/Containerfile
+          file: ./apps/${{ matrix.app }}/Containerfile
           context: .
           push: true
-          tags: ${{ env.IMAGE }}:latest
+          tags: ${{ env.IMAGE }}:${{ env.TAG }}
