@@ -31,15 +31,15 @@ jobs:
         if: github.event_name == 'push'
         id: changed
         run: |
-          changed=$(git diff --name-only HEAD^ HEAD | grep -oP 'apps/\K([^/]+)(?=/.+)' || echo '' | jq --raw-input --slurp 'split("\n") | map(select(. != "")) | { "apps": . }')
-          echo "changed=$(echo "$changed" | jq -c)" >> "$GITHUB_OUTPUT"
+          changed=$(git diff --name-only HEAD^ HEAD | grep -oP 'apps/\K([^/]+)(?=/.+)' | jq -c --raw-input --slurp 'split("\n") | map(select(. != "")) | { "apps": . }')
+          echo "changed=$changed" >> "$GITHUB_OUTPUT"
 
       - name: Set default app
         if: github.event_name == 'workflow_dispatch'
         id: default
         run: |
           changed=$(echo '[{"apps": ["'"${{ github.event.inputs.app }}"'"]}]' | jq -c)
-          echo "changed=$(echo "$changed" | jq -c)" >> "$GITHUB_OUTPUT"
+          echo "changed=$changed" >> "$GITHUB_OUTPUT"
 
   build-and-push:
     name: Build and push image
