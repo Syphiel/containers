@@ -29,13 +29,13 @@ jobs:
         if: github.event_name == 'push'
         id: changed
         run: |
-          echo "changed=$(git diff --name-only HEAD^ HEAD | grep -E '(?<=apps/)([^/]+)(?=/.+)' || echo 'renovate' | jq --raw-input --slurp 'split(\"\n\") |  map(select(. != \"\")) | { \"apps\": . }')" >> "$GITHUB_OUTPUT"
+          echo "changed=$(git diff --name-only HEAD^ HEAD | grep -E '(?<=apps/)([^/]+)(?=/.+)' || echo '' | jq --raw-input --slurp 'split("\n") |  map(select(. != "")) | { "apps": . }')" >> "$GITHUB_OUTPUT"
 
       - name: Set default app
         if: github.event_name == 'workflow_dispatch'
         id: default
         run: |
-          echo "changed={\"apps\": [\"${{ github.event.inputs.app }}\"]}" >> "$GITHUB_OUTPUT"
+          echo 'changed={"apps": ["${{ github.event.inputs.app }}"]}' >> "$GITHUB_OUTPUT"
 
   build-and-push:
     name: Build and push image
