@@ -32,21 +32,21 @@ jobs:
         id: changed
         run: |
           changed=$(git diff --name-only HEAD^ HEAD | grep -oP 'apps/\K([^/]+)(?=/.+)' | jq -c --raw-input --slurp 'split("\n") | map(select(. != "")) | { "apps": . }')
-          echo "changed=$changed" >> "$GITHUB_OUTPUT"
+          echo "changed=${changed}" >> "$GITHUB_OUTPUT"
 
       - name: Set default app
         if: github.event_name == 'workflow_dispatch'
         id: default
         run: |
           changed=$(echo -n '{"apps": [ "${{ github.event.inputs.app }}" ]}' | jq -c)
-          echo "changed=$changed" >> "$GITHUB_OUTPUT"
+          echo "changed=${changed}" >> "$GITHUB_OUTPUT"
           echo "::debug::changed=$changed"
 
   build-and-push:
     name: Build and push image
     runs-on: ubuntu-latest
     needs: get-changed
-    if: needs.get-changed.outputs.changed != '{"apps":[]}'
+    if: needs.get-changed.outputs.changed != '{"apps":[]}' || needs.get-changed.outputs.changed != '' || needs.get-changed.outputs.changed != '[]'
 
     permissions:
       contents: read
