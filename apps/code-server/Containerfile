@@ -2,6 +2,7 @@ FROM ghcr.io/coder/code-server:4.99.0@sha256:403adce354cc246be211db152294759fb52
 
 USER root
 
+# hadolint ignore=DL3008
 RUN apt-get update \
   && apt-get install --no-install-recommends -y \
     build-essential \
