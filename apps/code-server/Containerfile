@@ -1,0 +1,14 @@
+FROM ghcr.io/coder/code-server:4.99.0@sha256:403adce354cc246be211db152294759fb5214a514eb6d10a20e29f889db93d36 
+
+USER root
+
+RUN apt-get update \
+  && apt-get install --no-install-recommends -y \
+    build-essential \
+    lldb \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+USER $USER
+
+ENTRYPOINT ["/usr/bin/entrypoint.sh", "--bind-addr", "0.0.0.0:8080", "."]
