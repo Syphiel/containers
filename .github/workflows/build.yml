@@ -38,13 +38,14 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         id: default
         run: |
-          echo 'changed={"apps": ["${{ github.event.inputs.app }}"]}' >> "$GITHUB_OUTPUT"
+          changed=$(echo '[{"apps": ["'"${{ github.event.inputs.app }}"'"]}]' | jq -c)
+          echo "changed=$(echo "$changed" | jq -c)" >> "$GITHUB_OUTPUT"
 
   build-and-push:
     name: Build and push image
     runs-on: ubuntu-latest
     needs: get-changed
-    if: needs.get-changed.outputs.changed != '[]'
+    if: needs.get-changed.outputs.changed != '{"apps":[]}'
 
     permissions:
       contents: read
