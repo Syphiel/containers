@@ -46,7 +46,7 @@ jobs:
     name: Build and push image
     runs-on: ubuntu-latest
     needs: get-changed
-    if: needs.get-changed.outputs.changed != '{"apps":[]}' || needs.get-changed.outputs.changed != '' || needs.get-changed.outputs.changed != '[]'
+    if: needs.get-changed.outputs.changed != '{"apps":[]}' && needs.get-changed.outputs.changed != '' && needs.get-changed.outputs.changed != '[]'
 
     permissions:
       contents: read
