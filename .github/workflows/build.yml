@@ -38,7 +38,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         id: default
         run: |
-          changed=$(echo '[{"apps": ["'"${{ github.event.inputs.app }}"'"]}]' | jq -c)
+          changed=$(echo '{"apps": [ "${{ github.event.inputs.app }}" ]}' | jq -c)
           echo "changed=$changed" >> "$GITHUB_OUTPUT"
 
   build-and-push:
