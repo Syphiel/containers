@@ -38,8 +38,9 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         id: default
         run: |
-          changed=$(echo '{"apps": [ "${{ github.event.inputs.app }}" ]}' | jq -c)
+          changed=$(echo -n '{"apps": [ "${{ github.event.inputs.app }}" ]}' | jq -c)
           echo "changed=$changed" >> "$GITHUB_OUTPUT"
+          echo "::debug::changed=$changed"
 
   build-and-push:
     name: Build and push image
@@ -67,6 +68,7 @@ jobs:
         run: |
           TAG=$(grep -oP '^FROM .+${{ matrix.app }}:\K([^@$]+)' ./apps/${{ matrix.app }}/Containerfile | tail -1)
           echo "TAG=${TAG:-"latest"}" >> "$GITHUB_ENV"
+          echo "::debug::TAG=$TAG"
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772
