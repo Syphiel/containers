@@ -65,7 +65,7 @@ jobs:
       - name: Get ${{ matrix.app }} tag
         id: tag
         run: |
-          TAG=$(grep -oP '^FROM .+${{ matrix.app }}:\K([^@$]+) ./apps/${{ matrix.app }}/Containerfile' | tail -1)
+          TAG=$(grep -oP '^FROM .+${{ matrix.app }}:\K([^@$]+)' ./apps/${{ matrix.app }}/Containerfile | tail -1)
           echo "TAG=${TAG:-"latest"}" >> "$GITHUB_ENV"
 
       - name: Login to GitHub Container Registry
