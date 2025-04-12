@@ -20,7 +20,7 @@ jobs:
     name: Get changed apps
     runs-on: ubuntu-latest
     outputs:
-      changed: ${{ steps.changed.outputs.output }}
+      changed: ${{ steps.output.outputs.output }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
