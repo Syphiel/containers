@@ -20,7 +20,7 @@ jobs:
     name: Get changed apps
     runs-on: ubuntu-latest
     outputs:
-      changed: ${{ steps.changed.outputs.changed }}
+      changed: ${{ steps.changed.outputs.output }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,16 +31,20 @@ jobs:
         if: github.event_name == 'push'
         id: changed
         run: |
-          changed=$(git diff --name-only HEAD^ HEAD | grep -oP 'apps/\K([^/]+)(?=/.+)' | jq -c --raw-input --slurp 'split("\n") | map(select(. != "")) | { "apps": . }')
-          echo "changed=${changed}" >> "$GITHUB_OUTPUT"
+          CHANGED=$(git diff --name-only HEAD^ HEAD | grep -oP 'apps/\K([^/]+)(?=/.+)' | jq -c --raw-input --slurp 'split("\n") | map(select(. != "")) | { "apps": . }')
+          echo "CHANGED=${CHANGED}" >> "$GITHUB_ENV"
 
       - name: Set default app
         if: github.event_name == 'workflow_dispatch'
         id: default
         run: |
-          changed=$(echo -n '{"apps": [ "${{ github.event.inputs.app }}" ]}' | jq -c)
-          echo "changed=${changed}" >> "$GITHUB_OUTPUT"
-          echo "::debug::changed=$changed"
+          CHANGED=$(echo -n '{"apps": [ "${{ github.event.inputs.app }}" ]}' | jq -c)
+          echo "CHANGED=${CHANGED}" >> "$GITHUB_ENV"
+
+      - name: Output changed apps
+        id: output
+        run: |
+          echo "output=${{ env.CHANGED }}" >> "$GITHUB_OUTPUT"
 
   build-and-push:
     name: Build and push image
