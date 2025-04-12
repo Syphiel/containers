@@ -19,6 +19,21 @@
       "automerge": true,
       "automergeType": "branch",
       "platformAutomerge": false
+    },
+    {
+      "matchFileNames": [
+        "apps/code-server/**"
+      ],
+      "groupName": "code-server",
+      "extends": [
+        ":semanticCommitScope(code-server)"
+      ],
+      "addLabels": [
+        "code-server"
+      ],
+      "automerge": true,
+      "automergeType": "branch",
+      "platformAutomerge": false
     }
   ]
 }
