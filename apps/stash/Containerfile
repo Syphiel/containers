@@ -9,4 +9,4 @@ RUN apk add --no-cache intel-media-driver py3-psycopg2
 
 USER $USER
 
-ENTRYPOINT ["stash"]
+ENTRYPOINT ["/app/stash"]
