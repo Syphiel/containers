@@ -1,0 +1,12 @@
+FROM ghcr.io/home-operations/stash:v0.29.2@sha256:737865fe7a96f38c793a2173cfb577e434dae04a76ec3ea8a4a82187682942b7
+
+LABEL org.opencontainers.image.source=https://github.com/Syphiel/containers
+
+USER root
+
+# hadolint ignore=DL3018
+RUN apk add --no-cache intel-media-driver py3-psycopg2
+
+USER $USER
+
+ENTRYPOINT ["stash"]

@@ -34,6 +34,21 @@
       "automerge": true,
       "automergeType": "branch",
       "platformAutomerge": false
+    },
+    {
+      "matchFileNames": [
+        "apps/stash/**"
+      ],
+      "groupName": "stash",
+      "extends": [
+        ":semanticCommitScope(stash)"
+      ],
+      "addLabels": [
+        "stash"
+      ],
+      "automerge": true,
+      "automergeType": "branch",
+      "platformAutomerge": false
     }
   ]
 }
