@@ -23,7 +23,7 @@ jobs:
       changed: ${{ steps.output.outputs.output }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
@@ -67,7 +67,7 @@ jobs:
 
     steps:
       - name: Checkout ${{ matrix.app }}
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Get ${{ matrix.app }} tag
         id: tag
