@@ -5,7 +5,7 @@ LABEL org.opencontainers.image.source=https://github.com/Syphiel/containers
 USER root
 
 # hadolint ignore=DL3018
-RUN apk add --no-cache intel-media-driver py3-psycopg2
+RUN apk add --no-cache intel-media-driver py3-psycopg2 jellyfin-ffmpeg
 
 USER $USER
 
