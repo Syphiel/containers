@@ -77,7 +77,7 @@ jobs:
           echo "::debug::TAG=$TAG"
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@28fdb31ff34708d19615a74d67103ddc2ea9725c
+        uses: docker/login-action@6862ffc5ab2cdb4405cf318a62a6f4c066e2298b
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
