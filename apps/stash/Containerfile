@@ -1,4 +1,4 @@
-FROM ghcr.io/home-operations/stash:0.30.1@sha256:c3d60a1f5e0a6a3ea257ceeb986e1fbecada5a940925b7ce03bd10a07ed8e1ad
+FROM ghcr.io/home-operations/stash:0.30.1@sha256:27d901751302236407f544bf45bd02c1b19eb33ee0a3e45333018ecfc28496d1
 
 LABEL org.opencontainers.image.source=https://github.com/Syphiel/containers
 
