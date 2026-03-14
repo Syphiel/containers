@@ -49,6 +49,21 @@
       "automerge": true,
       "automergeType": "branch",
       "platformAutomerge": false
+    },
+    {
+      "matchFileNames": [
+        "apps/gluetun-rutorrent-portforward/**"
+      ],
+      "groupName": "gluetun-rutorrent-portforward",
+      "extends": [
+        ":semanticCommitScope(gluetun-rutorrent-portforward)"
+      ],
+      "addLabels": [
+        "portforward"
+      ],
+      "automerge": true,
+      "automergeType": "branch",
+      "platformAutomerge": false
     }
   ]
 }

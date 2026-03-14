@@ -1,0 +1,11 @@
+FROM alpine:3.23
+
+LABEL org.opencontainers.image.source=https://github.com/Syphiel/containers
+
+# hadolint ignore=DL3018
+RUN apk add --no-cache inotify-tools bash
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
