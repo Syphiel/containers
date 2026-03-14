@@ -72,7 +72,11 @@ jobs:
       - name: Get ${{ matrix.app }} tag
         id: tag
         run: |
-          TAG=$(grep -oP '^FROM .+${{ matrix.app }}:\K([^@$]+)' ./apps/${{ matrix.app }}/Containerfile | tail -1)
+          if [ -f "./apps/${{ matrix.app }}/version" ]; then
+            TAG=$(cat "./apps/${{ matrix.app }}/version" | tr -d '[:space:]')
+          else
+            TAG=$(grep -oP '^FROM .+${{ matrix.app }}:\K([^@$]+)' ./apps/${{ matrix.app }}/Containerfile | tail -1)
+          fi
           echo "TAG=${TAG:-"latest"}" >> "$GITHUB_ENV"
           echo "::debug::TAG=$TAG"
 
