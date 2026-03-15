@@ -5,7 +5,7 @@ while true; do
         FORWARDED_PORT=$(cat /tmp/gluetun/forwarded_port)
         if [ -n "$FORWARDED_PORT" ]; then
             echo "Port forwarded: $FORWARDED_PORT"
-            echo "RT_INC_PORT=\'$FORWARDED_PORT\'" > /data/config.env
+            echo "RT_INC_PORT='$FORWARDED_PORT'" > /data/config.env
             cat /data/config.env
             break
         else
