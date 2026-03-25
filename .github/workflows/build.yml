@@ -92,7 +92,7 @@ jobs:
         run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${{ matrix.app }}" >> "$GITHUB_ENV"
 
       - name: Build and Push ${{ matrix.app }}
-        uses: docker/build-push-action@de308676347136a77704e0f257298c8f1b30054f
+        uses: docker/build-push-action@b66d8774c665b789105b440514f0c97e6f19b06f
         with:
           file: ./apps/${{ matrix.app }}/Containerfile
           context: .
