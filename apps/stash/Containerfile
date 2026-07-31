@@ -2,11 +2,13 @@ FROM ghcr.io/home-operations/stash:0.31.1@sha256:869f910b26e7605676531e8823fa8c8
 
 LABEL org.opencontainers.image.source=https://github.com/Syphiel/containers
 
+# hadolint ignore=DL3066
 USER root
 
 # hadolint ignore=DL3018
 RUN apk add --no-cache intel-media-driver py3-psycopg2 jellyfin-ffmpeg
 
+# hadolint ignore=DL3066
 USER $USER
 
 ENTRYPOINT ["/usr/bin/catatonit", "--", "/entrypoint.sh"]
