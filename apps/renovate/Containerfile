@@ -1,4 +1,4 @@
-FROM ghcr.io/renovatebot/renovate:44.94.2@sha256:5b57bea3901aa930253246b2b9ce65080d79001cdce94d695c579519a3ce1af8
+FROM ghcr.io/renovatebot/renovate:44.94.3@sha256:33a979fa6a9ab2730ab806c239ecbe2ff41ea03617a77042412616557100f1ed
 
 COPY ./apps/renovate/entrypoint.sh /entrypoint.sh
 COPY ./apps/renovate/config.js.default /usr/src/app/config.js
