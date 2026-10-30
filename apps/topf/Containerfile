@@ -1,0 +1,12 @@
+FROM ghcr.io/postfinance/topf:v0.6.2@sha256:745b33c5f900df7cd9885557a037fcc5471b167b1fc20046385639112e3e6deb AS topf
+
+FROM alpine:3.24@sha256:be2656061b536c1883c4034790e21d0a09c5aaaf51968b89368a3c0371ea2c9a
+
+LABEL org.opencontainers.image.source=https://github.com/Syphiel/containers
+
+# hadolint ignore=DL3018
+RUN apk add --no-cache bash curl gnupg jq sops xz
+
+COPY --from=topf /usr/local/bin/topf /usr/local/bin/topf
+
+ENTRYPOINT ["/bin/sh"]

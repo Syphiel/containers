@@ -64,6 +64,21 @@
       "automerge": true,
       "automergeType": "branch",
       "platformAutomerge": false
+    },
+    {
+      "matchFileNames": [
+        "apps/topf/**"
+      ],
+      "groupName": "topf",
+      "extends": [
+        ":semanticCommitScope(topf)"
+      ],
+      "addLabels": [
+        "topf"
+      ],
+      "automerge": true,
+      "automergeType": "branch",
+      "platformAutomerge": false
     }
   ]
 }
