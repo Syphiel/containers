@@ -48,6 +48,7 @@ get_access_token
 
 export RENOVATE_PLATFORM=github
 export RENOVATE_TOKEN=${ACCESS_TOKEN}
+export RENOVATE_HOST_RULES='[{"matchHost":"ghcr.io","hostType":"docker","token":"'"${ACCESS_TOKEN}"'"}]'
 
 [[ -n "${GITHUB_APP_REPOSITORIES}" ]] && export RENOVATE_REPOSITORIES=${GITHUB_APP_REPOSITORIES} || export RENOVATE_AUTODISCOVER=true
 
